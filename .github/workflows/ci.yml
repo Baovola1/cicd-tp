@@ -1,0 +1,30 @@
+# .github/workflows/ci.yml
+name: CI
+on:
+  push: 
+    branches:
+      - master 
+jobs:
+  deploy: # Nom du premier job
+   runs-on: ubuntu-latest
+   steps: 
+      - uses: actions/checkout
+      - uses: actions/setup-node
+        with:
+          node-version-file: ".nvmrc" 
+      - name: Install dependencies #Installation dépendance
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Deploy project
+        run: npm run deploy
+  test:
+    needs: deploy
+    steps:
+      name: test unitaire
+      run: npm test
+  lint:
+    needs : deploy
+    steps:
+      name: lint code
+      run: npm run lint 
