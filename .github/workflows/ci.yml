@@ -8,8 +8,8 @@ jobs:
   deploy: # Nom du premier job
    runs-on: ubuntu-latest
    steps: 
-      - uses: actions/checkout
-      - uses: actions/setup-node
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc" 
       - name: Install dependencies #Installation dépendance
@@ -20,11 +20,13 @@ jobs:
         run: npm run deploy
   test:
     needs: deploy
+     runs-on: ubuntu-latest
     steps:
       name: test unitaire
       run: npm test
   lint:
     needs : deploy
+     runs-on: ubuntu-latest
     steps:
       name: lint code
       run: npm run lint 
