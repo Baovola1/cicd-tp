@@ -5,7 +5,7 @@ on:
     branches:
       - master 
 jobs:
-  deploy: # Nom du premier job
+  deploy:
    runs-on: ubuntu-latest
    steps: 
       - uses: actions/checkout@v5
@@ -20,11 +20,9 @@ jobs:
         run: npm run deploy
   test:
     needs: deploy
-    runs-on: ubuntu-latest
     name: test unitaire
-    if: npm test
+    runs-on: npm test
   lint:
     needs : deploy
-    runs-on: ubuntu-latest
     name: lint code
-    if: npm run lint 
+    runs-on: npm run lint 
