@@ -67,14 +67,12 @@ describe("E2E GET /hello", () => {
   });
 
   it("should recover from 404 error and handle valid request", async () => {
-    // First make a request to a non-existent endpoint
     try {
       await axios.get(`${baseURL}/nonexistent`);
     } catch (error) {
       expect(error.response.status).toBe(404);
     }
 
-    // Then make a valid request to verify server is still working
     const res = await axios.get(`${baseURL}/hello`, {
       params: { name: "Recovery" }
     });
