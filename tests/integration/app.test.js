@@ -26,10 +26,11 @@ describe("GET /hello", () => {
 
   describe("with special characters", () => {
     it("should handle ?name=José", async () => {
-      const res = await request(app).get("/hello?name=José");
-      expect(res.statusCode).toBe(200);
-      expect(res.text).toBe("Hello world! From José");
-    });
+  const res = await request(app).get("/hello").query({ name: "José" });
+  expect(res.statusCode).toBe(200);
+  expect(res.text).toBe("Hello world! From José");
+});
+    
 
     it("should handle ?name= (empty)", async () => {
       const res = await request(app).get("/hello?name=");

@@ -4,16 +4,15 @@ const { getGreeting } = require("./greeting");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get("/hello/:name?", (req, res) => {
-  const name = req.params.name;
-
+// GET /hello with query parameter ?name=John
+app.get("/hello", (req, res) => {
+  const name = req.query.name; // ✅ Lit le query parameter
   res.send(getGreeting(name));
 });
 
+// Reject POST method with 405
 app.post("/hello", (req, res) => {
-  const name = req.headers["x-name"];
-
-  res.send(getGreeting(name));
+  res.status(405).send("Method Not Allowed");
 });
 
 if (require.main === module) {

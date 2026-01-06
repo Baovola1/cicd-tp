@@ -37,7 +37,7 @@ describe("getGreeting", () => {
     });
 
     it("returns the hello world message with a name (emoji )", () => {
-      expect(getGreeting("")).toBe("Hello world! From ");
+      expect(getGreeting("😊")).toBe("Hello world! From 😊");
     });
 
     it("returns the hello world message with a name (very long string)", () => {

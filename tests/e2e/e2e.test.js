@@ -22,56 +22,50 @@ describe("E2E GET /hello", () => {
     expect(res.data).toBe("Hello world!");
   });
 
-  // 1. Test multiple sequential requests with different names
   it("should handle multiple sequential requests with different names", async () => {
     const names = ["Alice", "Bob", "Charlie", "Diana"];
-    
+
     for (const name of names) {
       const res = await axios.get(`${baseURL}/hello`, {
         params: { name }
       });
       expect(res.status).toBe(200);
-      expect(res.data).toBe(`Hello ${name}!`);
+      expect(res.data).toBe(`Hello world! From ${name}`);
     }
   });
 
-  // 2. Test concurrent requests
   it("should handle concurrent requests", async () => {
     const names = ["Eve", "Frank", "Grace", "Heidi", "Ivan"];
-    const requests = names.map(name => 
+    const requests = names.map(name =>
       axios.get(`${baseURL}/hello`, { params: { name } })
     );
-    
+
     const responses = await Promise.all(requests);
-    
+
     responses.forEach((res, index) => {
       expect(res.status).toBe(200);
-      expect(res.data).toBe(`Hello ${names[index]}!`);
+      expect(res.data).toBe(`Hello world! From ${names[index]}`);
     });
   });
 
-  // 3. Test server startup and shutdown (already covered by beforeAll/afterAll)
-  // Additional test to verify server is responsive
   it("should confirm server is running and responsive", async () => {
     const res = await axios.get(`${baseURL}/hello`, {
       params: { name: "Test" },
       timeout: 1000
     });
     expect(res.status).toBe(200);
-    expect(res.data).toBe("Hello Test!");
+    expect(res.data).toBe("Hello world! From Test");
   });
 
-  // 4. Test with very long names (1000+ characters)
   it("should handle very long names (1000+ characters)", async () => {
     const longName = "A".repeat(1000);
     const res = await axios.get(`${baseURL}/hello`, {
       params: { name: longName }
     });
     expect(res.status).toBe(200);
-    expect(res.data).toBe(`Hello ${longName}!`);
+    expect(res.data).toBe(`Hello world! From ${longName}`);
   });
 
-  // 5. Test error recovery (404, then valid request)
   it("should recover from 404 error and handle valid request", async () => {
     // First make a request to a non-existent endpoint
     try {
@@ -79,12 +73,12 @@ describe("E2E GET /hello", () => {
     } catch (error) {
       expect(error.response.status).toBe(404);
     }
-    
+
     // Then make a valid request to verify server is still working
     const res = await axios.get(`${baseURL}/hello`, {
       params: { name: "Recovery" }
     });
     expect(res.status).toBe(200);
-    expect(res.data).toBe("Hello Recovery!");
+    expect(res.data).toBe("Hello world! From Recovery");
   });
 });
