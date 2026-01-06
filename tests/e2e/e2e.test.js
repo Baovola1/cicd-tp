@@ -35,7 +35,7 @@ describe("E2E GET /hello", () => {
   });
 
   it("should handle concurrent requests", async () => {
-    const names = ["Eve", "Frank", "Grace", "Heidi", "Ivan"];
+    const names = ["Bao", "Bob", "Alicia", "Luc", "Ben"];
     const requests = names.map(name =>
       axios.get(`${baseURL}/hello`, { params: { name } })
     );
