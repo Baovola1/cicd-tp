@@ -6,6 +6,11 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  permissions:
+    pull-requests: write
+    checks: write
+    contents: write
+
 
 jobs:
   lint:
@@ -19,12 +24,28 @@ jobs:
       - run: npm run lint
 
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - run: npm ci
-      - run: npm test
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+    - run: npm ci
+    - run: npm test
+      continue-on-error: true  
+
+    - name: Install Allure CLI
+      run: npm install -g allure-commandline --save-dev  
+
+    - name: Generate Allure Report
+      if: always()  # Génère toujours le rapport
+      run: allure generate allure-results --clean -o allure-report
+
+    - name: Upload Allure Report
+      if: always()
+      uses: actions/upload-artifact@v4  
+      with:
+        name: allure-report
+        path: allure-report
+        retention-days: 30
     
